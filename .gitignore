@@ -13,3 +13,5 @@
 *.a
 /MicrocontrollerEmulation/build/
 /MicrocontrollerEmulation/dist/
+/LibrarySystem/build/
+/LibrarySystem/dist/
