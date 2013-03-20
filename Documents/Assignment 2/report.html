@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Report</title>
+</head>
+<body>
+<div style="text-align:center;">
+<h2> Programming Using C++ </h2>
+<h1>Library System</h1>
+<h2>Technical Report</h2>
+</div>
+<h2>Introduction</h2>
+<ul>
+<li><b>Student Name:</b> Tran Tuan Anh</li>
+<li><b>Student ID:</b> s3269999</li>
+<li><b>Student Name:</b> Dang Quang Binh</li>
+<li><b>Student ID:</b> s3274973</li>
+<li><b>Course:</b> COSC2131 - Programming using C++</li>
+<li><b>Assignment #2:</b> Library System</li>
+<li><b>Lecturer:</b> Dang Trong Trinh</li>
+<li><b>Institute:</b> RMIT International University Vietnam</li>
+</ul>
+<p> This page will show a general technical knowledge of how to install the program as well as its basic implementation and class diagram</p>
+<h2>Installation</h2>
+<ul><li>First, to get the source, browse to the site <a href="https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment2/" target="_blank">https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment2/</a> and download the file Anh_Binh_assign2.zip.</li>
+<li>Then, open a terminal (on linux) and extract the archive with command: <b>unzip Anh_Binh_assign2.zip</b>. After that, move into src folder with command: <b>cd src</b>.</li>
+<li>Now, you are in the source folder. Let's compile the program by typing the following command to your terminal and press Enter: <b>make</b>. This will generate some object files (*.o) and an executable binary file library_system, which is our emulator start-up code.</li>
+<li>To run the program, use the command: <b>./library_system</b> (if you are in the same folder of that library_system file) or <b>/path/to/folder/library_system</b> (if you are in a different folder (replace /path/to/folder/ with actual path).</li>
+</ul>
+<h2>C++ features and data structure</h2>
+<ol>
+<li>STL Container and algorithms
+<ul>
+<li>Map<ul>
+	
+	<li>Used to store Books, Borrowers, BookCopy and current borrowing operation. Using map as an associative container storing element with key-value combination for the ease of getting the element with a specific provided information later.</li>
+	<li>Map will help to get element easier and very flexible when the system need to get a specific element in the map. For example, with Map  Book&lt;long, Book*&gt; to store Book ISBN and the Book pointer as a key-value pair, the system can get the Book very quickly with the provided ISBN rather than loop through other kind of container and compare every book ISBN to get needed book.</li>
+</ul></li>
+  
+<li>Vector <ul>
+   <li>Used to store all copies of a book, all books or borrowers data in the library those do not need to get specific elements inside the container.</li>
+   <li>Convenient to use for simple operation.</li>
+</ul></li>   
+<li>Set<ul>
+   <li>Used to store unique object like borrowers or authors in an operation that should avoid the information being duplicating.</li>
+   <li>For example, a borrower can borrow many books so the system may store information of that borrower multiple times. After getting borrower information, store them in a set will get rid of multiple storing.</li>
+   <li>Sort algorithm is used to sort elements inside the Set with specific kind of filter.</li>
+</ul></li>    
+</ul></li>
+  
+<li>Exceptions
+<ul><li>Exceptions will be handled when invalid information occurs in the system to show users what's going wrong. Exception will be thrown when:
+<ul><li>Adding a book with existing ISBN</li>
+	<li>Adding a book copy with existing barcode</li>
+	<li>Adding a book copy with invalid barcode (10 first ISBN digit is wrong)</li>
+	<li>Get a book with wrong ISBN</li>
+	<li>Get a book copy with wrong barcode</li>
+	<li>Return a book which is not borrowed</li>
+	<li>Borrow a book which is not available in library (for example book is lost)</li>
+	<li>Add a borrower with existing ID</li>
+	<li>Get borrower with wrong ID</li>
+	<li>Borrow a book copy which is currently borrowed</li></ul></li>
+<li>With exception handling, errors will be easier to control	and prevent the program from being crashed. For example crashing from wrong casting when the system expects a numeric command but user input a string.</li>
+</ul></li>
+<li>Operator overloading
+   <ul>
+   <li>Used in Book and BookCopy class to compare Book and BookCopy object.</li>
+   <li>Overload "&lt;" and "==" operator to compare Book's isbn and BookCopy's barcode. Used in circumstance such as checking duplication insertion and sorting.</li>
+   </ul>
+</li></ol>
+<h2>Implementation</h2>
+<p>
+The program contains:
+</p>
+<ul>
+<li>library_system.cpp: the main class where the program starts with showing the main menu and starting main loop. This class will get command from user and call coresponding function.</li>
+<li>Book.cpp, Book.h / BookCopy.cpp, BookCopy.h: Book class. It defines Book's, Book Copy's data members and basic functions like get information of book or book copy.</li>
+<li>Borrower.cpp, Borrower.h: Declares and defines Borrower data member and functions.</li>
+<li>Library.cpp, Library.h: contains Library main data members such as Map of books and borrowers. Functions to  execute library's operators like add new books, add new borrowers, borrow a book and so on.</li>
+<li>utility.cpp, utility.h: utility functions. It's the library engine to process and contains other utility functions such as display menu and get user command, check valid input and compare string etc.</li>
+<li>LibraryException.cpp, LibraryException.h: exception class to show the appropriate warning output to users.</li>
+</ul>
+   <p>Class Diagram
+<img src="diagram.jpg" alt="Class diagram" /><br/></p>
+
+<div style="text-align:center;"><h1> End Of Assignment</h1> </div>
+</body>
+</html>

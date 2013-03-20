@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Report | Assignment 1 - Microcontroller Emulation | COSC2131 Programming using C++</title>
+</head>
+
+<body style="padding:20px;">
+<div style="text-align:center;">
+<h1>Technical Report</h1>
+<h2>Assignment 1 - Microcontroller Emulation</h2>
+<h3>COSC2131 - Programming using C++</h3>
+<hr />
+</div>
+
+<div style="text-align:justify;">
+<h2>Introduction</h2>
+<ul>
+<li><b>Full name:</b> Tran Tuan Anh</li>
+<li><b>Student ID:</b> s3269999</li>
+<li><b>Course:</b> COSC2131 - Programming using C++</li>
+<li><b>Assignment #1:</b> Microcontroller Emulation</li>
+<li><b>Lecturer:</b> Dang Trong Trinh</li>
+<li><b>Institute:</b> RMIT International University Vietnam</li>
+</ul>
+<p>
+This document is created as a part of the assignment requirements. Detailed information about student, assigment and institute are provided above.
+</p>
+<p>
+As a technical report, this document presents the steps to install and run the program. An other part explains the implementation of the whole project. The features beyond the basic requirements of the assignment are also be mentioned. Last but not least, some problems and solutions during the process of building the program are discussed in brief.
+</p>
+
+<h2>Installation</h2>
+<p>
+First, to get the source, browse to the site <a href="https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/" target="_blank">https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/</a> and download the file <a href="https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/G1_A1_s3269999_TranTuanAnh.zip" target="_blank">G1_A1_s3269999_TranTuanAnh.zip</a>.
+</p>
+<p>
+Then, open a terminal (on linux) and extract the archive with command: <b>unzip G1_A1_s3269999_TranTuanAnh.zip</b>. After that, move into <i>src</i> folder with command: <b>cd src</b>.
+</p>
+<p>
+Now, you are in the source folder. Let's compile the program by typing the following command to your terminal and press <i>Enter</i>: <b>make</b>. This will generate some object files (*.o) and an executable binary file <i>main</i>, which is our emulator start-up code.
+</p>
+<p>To run the program, use the command: <b>./main</b> (if you are in the same folder of that <i>main</i> file) or <b>/path/to/folder/main</b> (if you are in a different folder (replace <i>/path/to/folder/</i> with actual path).
+</p>
+
+<h2>Implementation</h2>
+<p>The program contains these main files:</p>
+<ul>
+<li>
+<b>main.cpp</b>: Start-up code. It executes the main loop of the program: get user command, call corresponding function and get user command again.
+</li>
+<li>
+<b>utility.cpp</b> and <b>utility.h</b>: Utility functions. It contains facade function for microcontroller processing, and other utility functions, such as: get command, check for valid input and convert string.
+</li>
+<li>
+<b>Microcontroller.cpp</b> and <b>Microcontroller.h</b>: Base (abstract) class of microcontroller. It declares and defines common member data and methods of a microcontroller.
+</li>
+<li>
+<b>MicrocontrollerFactory.cpp</b> and <b>MicrocontrollerFactory.h</b>: Microcontroller producer. It serves as a factory that create specific microcontrollers based on their types. It is also the center for maintaining plug-ins through type definition and instantiating selection.
+</li>
+<li>
+Other <b>*.cpp</b> and <b>*.h</b> files: Plug-ins. They extend base microcontroller class and represent additional microcontroller type.
+</li>
+</ul>
+<p>
+The data structure of the program is presented in the following diagram:
+</p>
+<p>
+<a href="https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/src/diagram.jpg" target="_blank"><img src="https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/src/diagram.jpg" alt="Class diagram" height="50%" width="50%" /></a>
+</p>
+<p>
+<a href="http://www.oodesign.com/factory-pattern.html" target="_blank">Factory design pattern</a> was used for the ease of managing plug-ins (additional microcontroller types). The factory has a method to create microcontroller of a specific type and return its pointer as a base class pointer:
+</p>
+<textarea disabled="disabled" rows="18" cols="95" style="white-space:nowrap;">
+Microcontroller * MicrocontrollerFactory::createMicrocontroller (const std::string&amp; type) const
+{
+	// Check for type 1
+	if (type == "Type1")
+	{
+		return new Type1;
+	}
+
+	// Check for type 2
+	if (type == "Type2")
+	{
+		return new Type2();
+	}
+	
+	...
+
+	return NULL;
+}
+</textarea>
+
+<h2>Extra Features</h2>
+<p>The implementation of this program consists of some features that go beyond the minimum requirements:
+</p>
+<ul>
+<li>
+<b><a href="http://www.oodesign.com/factory-pattern.html" target="_blank">Factory pattern</a></b>: As aforementioned, the plug-ins can be easily added and maintained by solely modifying the MicrocontrollerFactory class. The UI will automatically check for available types and present them to the user. This makes the code easy to manage and less buggy.
+</li>
+<li>
+<b><a href="http://en.wikipedia.org/wiki/Memory-mapped_I/O" target="_blank">Memory-mapped I/O</a></b>: This is implemented for PIC32F42 chip (Macrochip) as a plus. It is assumed that the chip has the video memory of 1000 bytes to serve as storage for an 40x25 characters display. Basically, if that area of memory is changed, the 40x25 will be displayed to the console.
+</li>
+<li>
+<b>Load/Save</b>: As a part of crisis management, this functionality is added to bring convenience to the end-user. It allow user save the state of currently connected microcontroller, and load it later (if type matched) if the user wants to continue working on that or in case of crashes, power cut-off, etc. The state files are named <b>save.</b> followed by chip model. E.g.: <b>save.r500</b>.
+</li>
+</ul>
+
+<h2>Problems and Solutions</h2>
+<p>
+To make this program a good and interesting one, I have encountered many issues. However, (input) validation is the most difficult part that took me quite lots of efforts to resolve.
+</p>
+<p>
+As C/C++ is very buggy, users may crash the program with various malformed inputs. The process of validation must be throrough to make sure that the input is clean and safe.
+</p>
+<p>The idea of using <i>char</i> array (C array) seems to be very useful because we can check each character of the input and we can also iterate through them. Nevertheless, saving the input as array is hard to maintain. Moreover, using array means that the input cannot be retrieved as a whole but instead in chunks (parts), which is very tedious to utilize. For those reasons, I decided to use <i>string</i> as the input type.
+</p>
+<p>
+However, using <i>string</i> only does not enable type-checking and parsing. Therefore, I used <i>istringstream</i> (input string stream) to check and extract parts of a string.
+</p>
+<p>
+From this assignment, I have found a great solution for validation in C++: <i>string</i> and <i>istringstream</i>. Applying this for future projects will helps me reduce the amount of validation code while the program can quickly check if the input is of valid form, length and type. 
+</p>
+</div>
+
+<br />
+<p>
+<a href="http://validator.w3.org/check?uri=https://mekong.rmit.edu.vn/~s3269999/cosc2131/assignment1/src/report.html" target="_blank">
+<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
+</a>
+</p>
+
+<div style="text-align:center;">
+<p>
+<i>Copyright 2012 by Tran Tuan Anh.</i>
+</p>
+</div>
+</body>
+
+</html>

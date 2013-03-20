@@ -11,3 +11,5 @@
 *.lai
 *.la
 *.a
+/MicrocontrollerEmulation/build/
+/MicrocontrollerEmulation/dist/
